@@ -11,16 +11,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # NOTE: libsdl3-dev only landed in apt fairly recently. If this step starts
-      # failing because the runner's Ubuntu image predates SDL3 packaging, either
-      # bump to a newer `runs-on` image or switch CMakeLists.txt to FetchContent
-      # SDL3 from source (see README.md "Prerequisites" for the tradeoffs).
+      # NOTE: libsdl3-dev only landed in apt fairly recently and "ubuntu-latest"
+      # (24.04) predates it, so it's deliberately not installed here.
+      # CMakeLists.txt falls back to fetching and building SDL3/SDL3_image/
+      # SDL3_ttf from source (via FetchContent) when find_package(SDL3 ...)
+      # can't find a system install -- see the SDL3 fetch block there. That
+      # fallback build uses SDL3_image's bundled stb_image backend for
+      # PNG/JPG (no libpng/libjpeg needed) but does need system freetype
+      # (required) and harfbuzz (optional, for text shaping) for SDL3_ttf.
       - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
             build-essential cmake ninja-build pkg-config \
-            libsdl3-dev libsdl3-image-dev libsdl3-ttf-dev
+            libfreetype-dev libharfbuzz-dev
 
       - name: Configure
         run: cmake --preset debug

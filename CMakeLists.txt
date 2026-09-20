@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.21)
-project(ChessAdventure LANGUAGES CXX)
+# C is needed alongside CXX because SDL3/SDL3_image/SDL3_ttf are C projects;
+# when they aren't found on the system, they get pulled in and built from
+# source below (see the SDL3 fetch block).
+project(ChessAdventure LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -20,11 +23,72 @@ include(FetchContent)
 # cmake_minimum_required() that recent CMake refuses to configure without this.
 set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 
-# --- SDL3: expected to be installed on the system (apt/vcpkg/homebrew/etc). See
-# README.md "Prerequisites" for install commands per platform. ---
-find_package(SDL3 REQUIRED CONFIG)
-find_package(SDL3_image REQUIRED CONFIG)
-find_package(SDL3_ttf REQUIRED CONFIG)
+# --- SDL3: prefer a system install (apt/vcpkg/homebrew/etc, see README.md
+# "Prerequisites") since it configures in seconds; fall back to building from
+# source when it's missing -- e.g. Ubuntu's apt repos didn't carry
+# libsdl3-dev until 24.10, so the "ubuntu-latest" GitHub Actions image (24.04)
+# needs this path. Both paths produce the same SDL3::SDL3 / SDL3_image::SDL3_image
+# / SDL3_ttf::SDL3_ttf targets used below.
+find_package(SDL3 3.2 QUIET CONFIG)
+find_package(SDL3_image 3.2 QUIET CONFIG)
+find_package(SDL3_ttf 3.2 QUIET CONFIG)
+
+if(NOT SDL3_FOUND OR NOT SDL3_image_FOUND OR NOT SDL3_ttf_FOUND)
+    message(STATUS "System SDL3/SDL3_image/SDL3_ttf not found -- fetching and building from source")
+
+    # Keep all three built the same way (static) so their generated CMake
+    # targets agree -- a shared SDL3_image linked against a static SDL3 (or
+    # vice versa) fails at CMake generate time with an INTERFACE_SDL3_SHARED
+    # property mismatch.
+    set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+    set(SDL_SHARED OFF CACHE BOOL "" FORCE)
+    set(SDL_STATIC ON CACHE BOOL "" FORCE)
+    set(SDL_TEST_LIBRARY OFF CACHE BOOL "" FORCE)
+
+    if(NOT SDL3_FOUND)
+        FetchContent_Declare(
+            SDL3
+            GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
+            GIT_TAG release-3.2.30
+            GIT_SHALLOW TRUE
+        )
+        FetchContent_MakeAvailable(SDL3)
+    endif()
+
+    if(NOT SDL3_image_FOUND)
+        # We only ever load PNG/JPG (via the bundled stb_image backend, which
+        # needs no external codec library) plus a couple of trivial built-in
+        # formats. Skip AVIF/JXL/TIFF/WEBP -- those need vendored submodules
+        # (dav1d, aom, libjxl, libtiff, libwebp, ...) that are heavy to fetch
+        # and build and that this game doesn't use. GIT_SUBMODULES "" stops
+        # FetchContent from cloning *any* of SDL3_image's optional codec
+        # submodules regardless of these flags.
+        set(SDLIMAGE_AVIF OFF CACHE BOOL "" FORCE)
+        set(SDLIMAGE_JXL OFF CACHE BOOL "" FORCE)
+        set(SDLIMAGE_TIF OFF CACHE BOOL "" FORCE)
+        set(SDLIMAGE_WEBP OFF CACHE BOOL "" FORCE)
+        FetchContent_Declare(
+            SDL3_image
+            GIT_REPOSITORY https://github.com/libsdl-org/SDL_image.git
+            GIT_TAG release-3.2.6
+            GIT_SHALLOW TRUE
+            GIT_SUBMODULES ""
+        )
+        FetchContent_MakeAvailable(SDL3_image)
+    endif()
+
+    if(NOT SDL3_ttf_FOUND)
+        # Non-vendored (the Linux default) requires system freetype -- see
+        # README.md "Prerequisites" / the CI workflow for the apt package.
+        FetchContent_Declare(
+            SDL3_ttf
+            GIT_REPOSITORY https://github.com/libsdl-org/SDL_ttf.git
+            GIT_TAG release-3.2.2
+            GIT_SHALLOW TRUE
+        )
+        FetchContent_MakeAvailable(SDL3_ttf)
+    endif()
+endif()
 
 # --- Small header-only/vendorable dependencies: fetched at configure time so the
 # build is reproducible without depending on distro package versions. ---

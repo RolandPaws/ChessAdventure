@@ -11,7 +11,7 @@ what's built vs. what's next.
 
 - A C++20 compiler (GCC 12+/Clang 15+/MSVC 19.3+)
 - CMake 3.21+
-- SDL3, SDL3_image, and SDL3_ttf development packages
+- SDL3, SDL3_image, and SDL3_ttf development packages -- optional, see below
 
 ```bash
 # Debian/Ubuntu (24.10+ / with SDL3 packaged)
@@ -26,8 +26,15 @@ brew install cmake sdl3 sdl3_image sdl3_ttf
 # -DCMAKE_TOOLCHAIN_FILE=<vcpkg>/scripts/buildsystems/vcpkg.cmake to configure.
 ```
 
-Everything else (nlohmann/json, doctest, Dear ImGui) is fetched automatically by
-CMake at configure time -- no other manual setup.
+If SDL3/SDL3_image/SDL3_ttf aren't found on the system (e.g. on Ubuntu 24.04,
+whose apt repos predate `libsdl3-dev`), CMake automatically fetches and builds
+them from source instead -- no separate flag needed, see the SDL3 fetch block
+in `CMakeLists.txt`. That path only needs `libfreetype-dev` on the system
+(required by SDL3_ttf); `libharfbuzz-dev` is picked up automatically if present
+but not required. This is what `ubuntu-latest` CI runners use.
+
+Everything else (nlohmann/json, doctest, Dear ImGui) is always fetched
+automatically by CMake at configure time -- no other manual setup.
 
 ## Build & run
 
