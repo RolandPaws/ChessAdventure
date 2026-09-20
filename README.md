@@ -29,9 +29,12 @@ brew install cmake sdl3 sdl3_image sdl3_ttf
 If SDL3/SDL3_image/SDL3_ttf aren't found on the system (e.g. on Ubuntu 24.04,
 whose apt repos predate `libsdl3-dev`), CMake automatically fetches and builds
 them from source instead -- no separate flag needed, see the SDL3 fetch block
-in `CMakeLists.txt`. That path only needs `libfreetype-dev` on the system
-(required by SDL3_ttf); `libharfbuzz-dev` is picked up automatically if present
-but not required. This is what `ubuntu-latest` CI runners use.
+in `CMakeLists.txt`. That path needs a few dev packages already on the system:
+`libfreetype-dev` (required by SDL3_ttf; `libharfbuzz-dev` is picked up
+automatically if present but not required), plus X11 dev headers so SDL3's own
+configure step doesn't refuse to build a windowless library -- see the apt
+install list in `.github/workflows/ci.yml`, which is what `ubuntu-latest` CI
+runners use.
 
 Everything else (nlohmann/json, doctest, Dear ImGui) is always fetched
 automatically by CMake at configure time -- no other manual setup.

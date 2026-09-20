@@ -18,13 +18,22 @@ jobs:
       # can't find a system install -- see the SDL3 fetch block there. That
       # fallback build uses SDL3_image's bundled stb_image backend for
       # PNG/JPG (no libpng/libjpeg needed) but does need system freetype
-      # (required) and harfbuzz (optional, for text shaping) for SDL3_ttf.
+      # (required) and harfbuzz (optional, for text shaping) for SDL3_ttf, and
+      # libx11-dev (SDL3's CMake hard-fails the configure step if it can't find
+      # *either* X11 or Wayland dev headers -- runner images ship the runtime
+      # libs but not the -dev headers). The libX* extension packages below
+      # match SDL's own documented Linux dependency list (docs/README-linux.md)
+      # so the built game gets normal X11 windowing/cursor/multi-monitor
+      # support; audio backends/OpenGL/Wayland aren't needed for this project
+      # yet and are left out.
       - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
             build-essential cmake ninja-build pkg-config \
-            libfreetype-dev libharfbuzz-dev
+            libfreetype-dev libharfbuzz-dev \
+            libx11-dev libxext-dev libxrandr-dev libxcursor-dev \
+            libxfixes-dev libxi-dev libxss-dev
 
       - name: Configure
         run: cmake --preset debug
