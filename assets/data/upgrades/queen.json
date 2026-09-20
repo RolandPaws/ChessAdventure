@@ -1,0 +1,45 @@
+{
+  "pieceId": "queen",
+  "nodes": [
+    {
+      "id": "royal_bearing",
+      "name": "Royal Bearing",
+      "description": "+5 HP.",
+      "cost": 1,
+      "requires": [],
+      "statDeltas": { "hp": 5 }
+    },
+    {
+      "id": "blade_dance",
+      "name": "Blade Dance",
+      "description": "+4 Attack.",
+      "cost": 1,
+      "requires": [],
+      "statDeltas": { "attack": 4 }
+    },
+    {
+      "id": "commanding_presence",
+      "name": "Commanding Presence",
+      "description": "+2 Defense.",
+      "cost": 2,
+      "requires": ["royal_bearing"],
+      "statDeltas": { "defense": 2 }
+    },
+    {
+      "id": "overwhelm",
+      "name": "Overwhelm",
+      "description": "Unlocks Overwhelm: attacks hit all enemies adjacent to the target for reduced damage.",
+      "cost": 2,
+      "requires": ["blade_dance"],
+      "grantsSkill": "overwhelm"
+    },
+    {
+      "id": "sovereigns_wrath",
+      "name": "Sovereign's Wrath",
+      "description": "Unlocks Sovereign's Wrath: a capstone skill granting an extra action once per battle.",
+      "cost": 3,
+      "requires": ["commanding_presence", "overwhelm"],
+      "grantsSkill": "sovereigns_wrath"
+    }
+  ]
+}

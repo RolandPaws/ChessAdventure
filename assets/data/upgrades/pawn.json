@@ -1,0 +1,45 @@
+{
+  "pieceId": "pawn",
+  "nodes": [
+    {
+      "id": "sturdy_stance",
+      "name": "Sturdy Stance",
+      "description": "Basic conditioning. +4 HP.",
+      "cost": 1,
+      "requires": [],
+      "statDeltas": { "hp": 4 }
+    },
+    {
+      "id": "sharpened_pike",
+      "name": "Sharpened Pike",
+      "description": "A better-kept weapon edge. +2 Attack.",
+      "cost": 1,
+      "requires": [],
+      "statDeltas": { "attack": 2 }
+    },
+    {
+      "id": "shield_bash",
+      "name": "Shield Bash",
+      "description": "Unlocks Shield Bash: a short-range stun on the piece's next attack.",
+      "cost": 2,
+      "requires": ["sturdy_stance"],
+      "grantsSkill": "shield_bash"
+    },
+    {
+      "id": "veteran_footing",
+      "name": "Veteran Footing",
+      "description": "Years on the front line. +1 Defense, +6 HP.",
+      "cost": 2,
+      "requires": ["sturdy_stance", "sharpened_pike"],
+      "statDeltas": { "hp": 6, "defense": 1 }
+    },
+    {
+      "id": "field_promotion",
+      "name": "Field Promotion",
+      "description": "Unlocks Field Promotion: a capstone skill that lets this piece requisition a temporary rank upgrade in battle.",
+      "cost": 3,
+      "requires": ["shield_bash", "veteran_footing"],
+      "grantsSkill": "field_promotion"
+    }
+  ]
+}

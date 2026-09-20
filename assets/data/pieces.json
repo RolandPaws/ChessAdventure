@@ -1,0 +1,53 @@
+{
+  "_comment": "Piece template registry. Each entry is a base archetype; RPG progression (upgrades, levels, skills) is layered on top per-instance -- see assets/data/upgrades/<id>.json and src/upgrades/SkillTree.h.",
+  "pieces": [
+    {
+      "id": "pawn",
+      "name": "Recruit",
+      "description": "A green foot soldier. Cheap, replaceable, and surprisingly deadly once it grows into its skill tree.",
+      "movePattern": "pawn_forward",
+      "baseStats": { "hp": 12, "attack": 3, "defense": 1, "moveRange": 1 },
+      "skillTree": "assets/data/upgrades/pawn.json"
+    },
+    {
+      "id": "knight",
+      "name": "Vanguard",
+      "description": "A mounted scout whose L-shaped charge ignores blockers entirely.",
+      "movePattern": "knight_jump",
+      "baseStats": { "hp": 20, "attack": 5, "defense": 2, "moveRange": 1 },
+      "skillTree": "assets/data/upgrades/knight.json"
+    },
+    {
+      "id": "bishop",
+      "name": "Mystic",
+      "description": "A diagonal-striking spellcaster who trades raw power for support magic.",
+      "movePattern": "diagonal_any",
+      "baseStats": { "hp": 16, "attack": 4, "defense": 1, "moveRange": 8 },
+      "skillTree": "assets/data/upgrades/bishop.json"
+    },
+    {
+      "id": "rook",
+      "name": "Guardian",
+      "description": "A slow, heavily armored bulwark that holds the line along ranks and files.",
+      "movePattern": "orthogonal_any",
+      "baseStats": { "hp": 28, "attack": 4, "defense": 4, "moveRange": 8 },
+      "skillTree": "assets/data/upgrades/rook.json"
+    },
+    {
+      "id": "queen",
+      "name": "Sovereign",
+      "description": "The most versatile unit on the board: high mobility and high damage, but fragile if caught alone.",
+      "movePattern": "omni_any",
+      "baseStats": { "hp": 22, "attack": 7, "defense": 2, "moveRange": 8 },
+      "skillTree": "assets/data/upgrades/queen.json"
+    },
+    {
+      "id": "king",
+      "name": "Monarch",
+      "description": "Losing this piece ends the run. Slow and cautious, but its presence strengthens nearby allies.",
+      "movePattern": "omni_one",
+      "baseStats": { "hp": 30, "attack": 3, "defense": 3, "moveRange": 1 },
+      "skillTree": "assets/data/upgrades/king.json"
+    }
+  ]
+}

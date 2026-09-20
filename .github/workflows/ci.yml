@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # NOTE: libsdl3-dev only landed in apt fairly recently. If this step starts
+      # failing because the runner's Ubuntu image predates SDL3 packaging, either
+      # bump to a newer `runs-on` image or switch CMakeLists.txt to FetchContent
+      # SDL3 from source (see README.md "Prerequisites" for the tradeoffs).
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential cmake ninja-build pkg-config \
+            libsdl3-dev libsdl3-image-dev libsdl3-ttf-dev
+
+      - name: Configure
+        run: cmake --preset debug
+
+      - name: Build
+        run: cmake --build --preset debug -j"$(nproc)"
+
+      - name: Test
+        run: ctest --test-dir build/debug --output-on-failure
+
+      - name: Format check
+        run: |
+          find src tools tests -name '*.cpp' -o -name '*.h' | xargs clang-format --dry-run --Werror

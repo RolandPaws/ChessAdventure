@@ -1,0 +1,45 @@
+{
+  "pieceId": "rook",
+  "nodes": [
+    {
+      "id": "reinforced_plating",
+      "name": "Reinforced Plating",
+      "description": "+8 HP.",
+      "cost": 1,
+      "requires": [],
+      "statDeltas": { "hp": 8 }
+    },
+    {
+      "id": "iron_footing",
+      "name": "Iron Footing",
+      "description": "+2 Defense.",
+      "cost": 1,
+      "requires": [],
+      "statDeltas": { "defense": 2 }
+    },
+    {
+      "id": "fortify",
+      "name": "Fortify",
+      "description": "Unlocks Fortify: this piece can brace, doubling Defense until its next turn.",
+      "cost": 2,
+      "requires": ["iron_footing"],
+      "grantsSkill": "fortify"
+    },
+    {
+      "id": "siege_engine",
+      "name": "Siege Engine",
+      "description": "+3 Attack.",
+      "cost": 2,
+      "requires": ["reinforced_plating"],
+      "statDeltas": { "attack": 3 }
+    },
+    {
+      "id": "unbreakable",
+      "name": "Unbreakable",
+      "description": "Unlocks Unbreakable: a capstone skill that grants immunity to the next attack once per battle.",
+      "cost": 3,
+      "requires": ["fortify", "siege_engine"],
+      "grantsSkill": "unbreakable"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "pieceId": "bishop",
+  "nodes": [
+    {
+      "id": "focused_mind",
+      "name": "Focused Mind",
+      "description": "+3 HP.",
+      "cost": 1,
+      "requires": [],
+      "statDeltas": { "hp": 3 }
+    },
+    {
+      "id": "arcane_bolt",
+      "name": "Arcane Bolt",
+      "description": "+2 Attack.",
+      "cost": 1,
+      "requires": [],
+      "statDeltas": { "attack": 2 }
+    },
+    {
+      "id": "minor_heal",
+      "name": "Minor Heal",
+      "description": "Unlocks Minor Heal: restore HP to an adjacent ally instead of attacking.",
+      "cost": 2,
+      "requires": ["focused_mind"],
+      "grantsSkill": "minor_heal"
+    },
+    {
+      "id": "warding_glyph",
+      "name": "Warding Glyph",
+      "description": "+2 Defense.",
+      "cost": 2,
+      "requires": ["arcane_bolt"],
+      "statDeltas": { "defense": 2 }
+    },
+    {
+      "id": "sanctuary",
+      "name": "Sanctuary",
+      "description": "Unlocks Sanctuary: a capstone skill that shields all allies within two tiles for one turn.",
+      "cost": 3,
+      "requires": ["minor_heal", "warding_glyph"],
+      "grantsSkill": "sanctuary"
+    }
+  ]
+}

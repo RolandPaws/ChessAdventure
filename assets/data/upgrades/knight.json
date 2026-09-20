@@ -1,0 +1,45 @@
+{
+  "pieceId": "knight",
+  "nodes": [
+    {
+      "id": "swift_hooves",
+      "name": "Swift Hooves",
+      "description": "Basic mobility training. +3 HP.",
+      "cost": 1,
+      "requires": [],
+      "statDeltas": { "hp": 3 }
+    },
+    {
+      "id": "lance_technique",
+      "name": "Lance Technique",
+      "description": "+3 Attack.",
+      "cost": 1,
+      "requires": [],
+      "statDeltas": { "attack": 3 }
+    },
+    {
+      "id": "charge",
+      "name": "Charge",
+      "description": "Unlocks Charge: bonus damage if this piece moved before attacking this turn.",
+      "cost": 2,
+      "requires": ["lance_technique"],
+      "grantsSkill": "charge"
+    },
+    {
+      "id": "battle_hardened",
+      "name": "Battle-Hardened",
+      "description": "+2 Defense, +5 HP.",
+      "cost": 2,
+      "requires": ["swift_hooves"],
+      "statDeltas": { "hp": 5, "defense": 2 }
+    },
+    {
+      "id": "relentless_pursuit",
+      "name": "Relentless Pursuit",
+      "description": "Unlocks Relentless Pursuit: a capstone skill granting a second move action after a capture.",
+      "cost": 3,
+      "requires": ["charge", "battle_hardened"],
+      "grantsSkill": "relentless_pursuit"
+    }
+  ]
+}

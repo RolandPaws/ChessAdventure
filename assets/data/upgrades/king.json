@@ -1,0 +1,45 @@
+{
+  "pieceId": "king",
+  "nodes": [
+    {
+      "id": "royal_guard",
+      "name": "Royal Guard",
+      "description": "+6 HP.",
+      "cost": 1,
+      "requires": [],
+      "statDeltas": { "hp": 6 }
+    },
+    {
+      "id": "resolute",
+      "name": "Resolute",
+      "description": "+2 Defense.",
+      "cost": 1,
+      "requires": [],
+      "statDeltas": { "defense": 2 }
+    },
+    {
+      "id": "rally",
+      "name": "Rally",
+      "description": "Unlocks Rally: allies within two tiles gain +1 Attack until the King's next turn.",
+      "cost": 2,
+      "requires": ["royal_guard"],
+      "grantsSkill": "rally"
+    },
+    {
+      "id": "iron_will",
+      "name": "Iron Will",
+      "description": "+8 HP, +1 Defense.",
+      "cost": 2,
+      "requires": ["resolute"],
+      "statDeltas": { "hp": 8, "defense": 1 }
+    },
+    {
+      "id": "last_stand",
+      "name": "Last Stand",
+      "description": "Unlocks Last Stand: a capstone skill that prevents defeat for one turn when HP would drop to 0.",
+      "cost": 3,
+      "requires": ["rally", "iron_will"],
+      "grantsSkill": "last_stand"
+    }
+  ]
+}

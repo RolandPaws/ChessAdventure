@@ -1,0 +1,43 @@
+## Build outputs
+build/
+out/
+cmake-build-*/
+_deps/
+
+## CMake (in case a build directory ever lands outside build/)
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+Testing/
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_CPack_Packages/
+
+## Compiled binaries / objects
+*.o
+*.obj
+*.exe
+*.out
+*.a
+*.so
+*.dylib
+*.dll
+*.pdb
+*.ilk
+
+## Editors / IDEs
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+## Editor tool user state (not shared assets)
+tools/map_editor/.editor_state.json
+
+## Logs
+*.log
